@@ -60,8 +60,9 @@ class ViewProcessorFactory implements IViewProcessorFactory
 
 		var filter:ITypeFilter;
 
-		for (mapping in processorMappings)
+		for (object in processorMappings)
 		{
+			var mapping : ViewProcessorMapping = cast object;
 			filter = mapping.matcher;
 			mapTypeForFilterBinding(filter, type, view);
 			runProcess(view, type, mapping);
@@ -74,8 +75,10 @@ class ViewProcessorFactory implements IViewProcessorFactory
 	 */
 	public function runUnprocessors(view:Dynamic, type:Class<Dynamic>, processorMappings:Array<Dynamic>):Void
 	{
-		for (mapping in processorMappings)
+		for (object in processorMappings)
 		{
+			var mapping : ViewProcessorMapping = cast object;
+
 			// ?? Is this correct - will assume that people are implementing something sensible in their processors.
 			// CHECK
 			if (mapping.processor == null) {

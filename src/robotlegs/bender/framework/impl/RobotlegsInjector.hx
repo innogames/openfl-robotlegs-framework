@@ -36,9 +36,9 @@ class RobotlegsInjector extends Injector implements IInjector
 	/**
 	 * @inheritDoc
 	 */
-	public function get_parent():IInjector
+	public function get_parent():Null<IInjector>
 	{
-		return cast(this.parentInjector, RobotlegsInjector);
+		return cast this.parentInjector;
 	}
 
 	/*============================================================================*/

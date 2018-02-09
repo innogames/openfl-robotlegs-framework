@@ -72,9 +72,10 @@ class Context extends EventDispatcher implements IContext
 		return value;
 	}
 
-	public var state(get, null):String;
 	//[Bindable("stateChange")]
 	@:meta(Bindable('stateChange'))
+	public var state(get, null):String;
+
 	/**
 	 * @inheritDoc
 	 */

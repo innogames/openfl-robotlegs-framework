@@ -9,7 +9,6 @@ package robotlegs.bender.extensions.modularity.impl;
 
 import openfl.events.EventDispatcher;
 import openfl.events.IEventDispatcher;
-import org.swiftsuspenders.utils.CallProxy;
 import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 import robotlegs.bender.framework.api.IContext;
@@ -20,6 +19,7 @@ import robotlegs.bender.framework.api.IInjector;
  */
 
 @:keepSub
+@:rtti
 class ModuleConnector implements IModuleConnector
 {
 
@@ -45,6 +45,7 @@ class ModuleConnector implements IModuleConnector
 		var injector:IInjector = context.injector;
 		_rootInjector = getRootInjector(injector);
 		_localDispatcher = injector.getInstance(IEventDispatcher);
+		_configuratorsByChannel = new Map<String, ModuleConnectionConfigurator>();
 		context.whenDestroying(destroy);
 	}
 
@@ -89,20 +90,17 @@ class ModuleConnector implements IModuleConnector
 
 	private function getOrCreateConfigurator(channelId:String):ModuleConnectionConfigurator
 	{
-		// CHECK
-		if (!CallProxy.hasField(_configuratorsByChannel, channelId)) {
-		//if (_configuratorsByChannel[channelId] == null) {
-			Reflect.setField(_configuratorsByChannel, channelId, createConfigurator(channelId));
-			//_configuratorsByChannel[channelId] = createConfigurator(channelId);
+		if (_configuratorsByChannel.exists(channelId) == false)
+		{
+			_configuratorsByChannel.set(channelId, createConfigurator(channelId));
 		}
-		return Reflect.getProperty(_configuratorsByChannel, channelId);
-		//return _configuratorsByChannel[channelId];
-		//return _configuratorsByChannel[channelId] ||= createConfigurator(channelId);
+
+		return _configuratorsByChannel.get(channelId);
 	}
 
 	private function createConfigurator(channelId:String):ModuleConnectionConfigurator
 	{
-		if (_rootInjector.hasMapping(IEventDispatcher, channelId))
+		if (_rootInjector.hasMapping(IEventDispatcher, channelId) == false)
 		{
 			_rootInjector.map(IEventDispatcher, channelId)
 				.toValue(new EventDispatcher());

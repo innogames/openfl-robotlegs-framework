@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="OpenflRobotlegsFramework" package="com.sample.openflrobotlegsframework" version="1.0.0" company="Company Name" />
+	<app main="TestSuite" path="Export" file="OpenflRobotlegsFramework" />
+	
+	<source path="src" />
+	<source path="tests" />
+
+	<haxelib name="openfl" />
+	<haxelib name="swiftsuspenders" />
+
+</project>

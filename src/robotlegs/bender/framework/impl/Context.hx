@@ -7,7 +7,6 @@
 
 package robotlegs.bender.framework.impl;
 
-import haxe.io.Error;
 import openfl.events.EventDispatcher;
 import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.framework.api.IContext;
@@ -73,7 +72,7 @@ class Context extends EventDispatcher implements IContext
 	}
 
 	//[Bindable("stateChange")]
-	@:meta(Bindable('stateChange'))
+//	@:meta(Bindable('stateChange'))
 	public var state(get, null):String;
 
 	/**
@@ -137,7 +136,7 @@ class Context extends EventDispatcher implements IContext
 
 	private var _logManager:LogManager = new LogManager();
 
-	private var _children:Array<Dynamic> = [];
+	private var _children:Array<IContext> = new Array<IContext>();
 
 	private var _pin:Pin;
 
@@ -528,6 +527,6 @@ class Context extends EventDispatcher implements IContext
 		{
 			removeChild(child);
 		}
-		_children = [];
+		_children = new Array<IContext>();
 	}
 }

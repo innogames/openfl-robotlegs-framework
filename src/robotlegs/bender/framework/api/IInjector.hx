@@ -149,7 +149,7 @@ interface IInjector extends IEventDispatcher
 	 * Sets the parent <code>IInjector</code>
 	 * @param parentInjector The parent IInjector
 	 */
-	public var parent(get, set):IInjector;
+	public var parent(get, set):Null<IInjector>;
 	/**
 	 * Returns the <code>IInjector</code> used for dependencies the current
 	 * <code>Injector</code> can't supply

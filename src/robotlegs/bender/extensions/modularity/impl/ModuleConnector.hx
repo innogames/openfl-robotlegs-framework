@@ -77,10 +77,7 @@ class ModuleConnector implements IModuleConnector
 	{
 		for (channelId in _configuratorsByChannel)
 		{
-			var id = cast(channelId, String);
-			var configurator:ModuleConnectionConfigurator = _configuratorsByChannel[id];
-			configurator.destroy();
-			_configuratorsByChannel[id] = null;
+			channelId.destroy();
 		}
 
 		_configuratorsByChannel = null;

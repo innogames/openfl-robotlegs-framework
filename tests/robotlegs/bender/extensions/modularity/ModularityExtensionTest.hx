@@ -1,5 +1,9 @@
 package robotlegs.bender.extensions.modularity;
 
+import robotlegs.bender.extensions.modularity.api.IModuleConnector;
+import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
+import robotlegs.bender.extensions.viewManager.api.IViewManager;
+import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 import robotlegs.bender.framework.impl.loggingSupport.LogParams;
 import robotlegs.bender.framework.api.LogLevel;
 import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
@@ -98,8 +102,6 @@ class ModularityExtensionTest extends TestCase {
             function(log: LogParams): Void {
                 var logSourceClassName: String = Type.getClassName(Type.getClass(log.source));
                 var modularityExtensionClassName: String = Type.getClassName(ModularityExtension);
-                trace("log.source: " + logSourceClassName);
-                trace("ModularityExtension: " + modularityExtensionClassName);
 
                 if (logSourceClassName == modularityExtensionClassName && log.level == LogLevel.ERROR) {
                     errorLogged = true;
@@ -113,6 +115,49 @@ class ModularityExtensionTest extends TestCase {
         assertTrue(errorLogged);
     }
 
+    public function test_child_added_to_viewManager_inherits_injector(): Void
+    {
+        addRootToStage();
+        parentContext = new Context()
+        .install([
+            ContextViewExtension,
+            ModularityExtension,
+            ViewManagerExtension,
+            StageSyncExtension])
+        .configure(new ContextView(parentView));
+
+        var viewManager: IViewManager =
+        parentContext.injector.getInstance(IViewManager);
+        viewManager.addContainer(childView);
+
+        childContext = new Context()
+        .install([
+            ContextViewExtension,
+            ModularityExtension,
+            StageSyncExtension])
+        .configure(new ContextView(childView));
+
+        root.addChild(parentView);
+        root.addChild(childView);
+
+        assertTrue(childContext.injector.parent == parentContext.injector);
+    }
+
+    public function test_moduleConnector_mapped_to_injector(): Void
+    {
+        var actual: Dynamic = null;
+        var context : IContext = new Context();
+        context.install([
+            EventDispatcherExtension,
+            ModularityExtension]);
+
+        context.whenInitializing( function(): Void {
+        actual = context.injector.getInstance(IModuleConnector);
+        });
+
+        context.initialize();
+        assertTrue(Std.is(actual, IModuleConnector));
+    }
 
     private function addRootToStage(): Void
     {

@@ -4,6 +4,8 @@
 /.idea
 /*.iml
 /out
+OpenflRobotlegsFramework.hxproj
+/Export
 
 # VisualStudioCode
 vscode-project.hxml

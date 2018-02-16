@@ -8,10 +8,9 @@
 package robotlegs.bender.framework.impl;
 
 
+import robotlegs.bender.framework.api.IExtension;
 import org.swiftsuspenders.InjectorMacro;
-import org.swiftsuspenders.utils.CallProxy;
 import org.swiftsuspenders.utils.UID;
-import robotlegs.bender.framework.api.IBundle;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.ILogger;
 
@@ -58,27 +57,36 @@ class ExtensionInstaller
 	public function install(extension:Dynamic):Void
 	{
 		if (Std.is(extension, Class))
-		{
-			var extensionInstance = Type.createInstance(extension, []);
-			install(extensionInstance);
-			InjectorMacro.keep(extensionInstance);
-		}
+			installClassExtension(extension);
 		else
-		{
-			var id = UID.instanceID(extension);
-			if (_classes[id] == true) return;
-			var extensionClass:Class<Dynamic> = Type.getClass(extension);
-			
-			_logger.debug("Installing extension {0}", [id]);
-			_classes[id] = true;
-			
-			var hasExtendField = CallProxy.hasField(extension, "extend");
-			
-			if (hasExtendField == true) {
-				
-				extension.extend(_context);
-			}
+			instanllInstanceExtension(cast(extension, IExtension));
+	}
+
+	private function installClassExtension(classExtension: Class<Dynamic>): Void {
+		var extensionInstance = Type.createInstance(classExtension, []);
+		install(extensionInstance);
+		InjectorMacro.keep(extensionInstance);
+	}
+
+	private function instanllInstanceExtension(extension: IExtension): Void {
+		var extensionId: String = UID.instanceID(extension);
+
+		if (canInstall(extensionId)) {
+			markExtensionAsInstalled(extensionId);
+			extension.extend(_context);
 		}
+	}
+
+	private inline function canInstall(extensionId: String): Bool {
+		var isInstalled: Bool = _classes[extensionId] == true;
+		if (isInstalled) _logger.warn("Attempt to install extension with id: " + extensionId + " twice!");
+
+		return !isInstalled;
+	}
+
+	private inline function markExtensionAsInstalled(extensionId: String): Void {
+		js.Browser.console.debug("Installing extension {0}", [extensionId]);
+		_classes[extensionId] = true;
 	}
 
 	/**

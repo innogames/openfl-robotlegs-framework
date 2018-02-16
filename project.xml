@@ -2,7 +2,7 @@
 <project>
 	
 	<meta title="OpenflRobotlegsFramework" package="com.sample.openflrobotlegsframework" version="1.0.0" company="Company Name" />
-	<app main="TestSuite" path="Export" file="OpenflRobotlegsFramework" />
+	<app main="RobotlegsTests" path="Export" file="OpenflRobotlegsFramework" />
 	
 	<source path="src" />
 	<source path="tests" />

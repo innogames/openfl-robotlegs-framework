@@ -7,6 +7,7 @@
 
 package robotlegs.bender.framework.impl;
 
+import robotlegs.bender.framework.api.LogLevel;
 import haxe.Timer;
 import robotlegs.bender.framework.api.ILogTarget;
 import robotlegs.bender.framework.api.ILogger;
@@ -52,8 +53,7 @@ class Logger implements ILogger
 	 */
 	public function debug(message:Dynamic, params:Array<Dynamic> = null):Void
 	{
-		
-		_target.log(_source, 32, Timer.stamp(), message, params);
+		_target.log(_source, LogLevel.DEBUG, Timer.stamp(), message, params);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Logger implements ILogger
 	 */
 	public function info(message:Dynamic, params:Array<Dynamic> = null):Void
 	{
-		_target.log(_source, 16, Timer.stamp(), message, params);
+		_target.log(_source, LogLevel.INFO, Timer.stamp(), message, params);
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Logger implements ILogger
 	 */
 	public function warn(message:Dynamic, params:Array<Dynamic> = null):Void
 	{
-		_target.log(_source, 8, Timer.stamp(), message, params);
+		_target.log(_source, LogLevel.WARN, Timer.stamp(), message, params);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class Logger implements ILogger
 	 */
 	public function error(message:Dynamic, params:Array<Dynamic> = null):Void
 	{
-		_target.log(_source, 4, Timer.stamp(), message, params);
+		_target.log(_source, LogLevel.ERROR, Timer.stamp(), message, params);
 	}
 
 	/**
@@ -85,6 +85,6 @@ class Logger implements ILogger
 	 */
 	public function fatal(message:Dynamic, params:Array<Dynamic> = null):Void
 	{
-		_target.log(_source, 2, Timer.stamp(), message, params);
+		_target.log(_source, LogLevel.FATAL, Timer.stamp(), message, params);
 	}
 }

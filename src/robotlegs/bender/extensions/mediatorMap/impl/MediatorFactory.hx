@@ -105,7 +105,6 @@ class MediatorFactory
 
 		for (mapping in _mediatorsItem.keys())
 		{
-			js.Browser.console.warn("mapping", mapping);
 			_manager.removeMediator(_mediatorsItem[mapping], item, cast(mapping, IMediatorMapping));
 		}
 

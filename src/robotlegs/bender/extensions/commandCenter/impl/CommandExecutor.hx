@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.commandCenter.impl;
 
-import org.swiftsuspenders.utils.CallProxy;
 import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 import robotlegs.bender.framework.api.IInjector;

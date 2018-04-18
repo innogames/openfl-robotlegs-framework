@@ -22,9 +22,10 @@ class ViewProcessorViewHandler implements IViewProcessorViewHandler
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _mappings:Array<Dynamic> = [];
+	private var _mappings:Array<IViewProcessorMapping> = [];
 
-	private var _knownMappings = new Map<String,Dynamic>();
+	private var _knownMappings = new Map<String,Array<IViewProcessorMapping>>();
+	private var _interestedMappings = new Map<String,Bool>();
 
 	private var _factory:IViewProcessorFactory;
 
@@ -94,42 +95,44 @@ class ViewProcessorViewHandler implements IViewProcessorViewHandler
 
 	private function flushCache():Void
 	{
-		_knownMappings = new Map<String,Dynamic>();
+		_knownMappings = new Map<String,Array<IViewProcessorMapping>>();
+		_interestedMappings = new Map<String,Bool>();
 	}
 
-	private function getInterestedMappingsFor(view:Dynamic, type:Class<Dynamic>):Array<Dynamic>
+	private function getInterestedMappingsFor(view:Dynamic, type:Class<Dynamic>):Array<IViewProcessorMapping>
 	{
 		var mapping:IViewProcessorMapping;
-		
 		var id = UID.classID(type);
+
 		// we've seen this type before and nobody was interested
-		if (_knownMappings[id] == false)
+		if (_interestedMappings[id] == false) {
 			return null;
+		}
 
 		// we haven't seen this type before
-		// CHECK
-		//if (_knownMappings[id] == undefined)
-		if (_knownMappings[id] == null)
-		{
-			_knownMappings[id] = false;
-			for (i in 0..._mappings.length)
-			{
-				mapping = _mappings[i];
-				if (mapping.matcher.matches(view))
-				{
-					// CHECK
-					if (_knownMappings[id] == false) _knownMappings[id] = [];
+		if (_knownMappings[id] == null) {
+			_interestedMappings[id] = false;
 
-					//_knownMappings[id] ||= [];
+			for (i in 0..._mappings.length) {
+				mapping = _mappings[i];
+
+				if (mapping.matcher.matches(view)) {
+					if (_interestedMappings[id] == false) {
+						_interestedMappings[id] = true;
+						_knownMappings[id] = new Array<IViewProcessorMapping>();
+					}
+
 					_knownMappings[id].push(mapping);
 				}
 			}
+
 			// nobody cares, let's get out of here
-			if (_knownMappings[id] == false)
+			if (_interestedMappings[id] == false) {
 				return null;
+			}
 		}
 
 		// these mappings really do care
-		return cast(_knownMappings[id], Array<Dynamic>);
+		return _knownMappings[id];
 	}
 }

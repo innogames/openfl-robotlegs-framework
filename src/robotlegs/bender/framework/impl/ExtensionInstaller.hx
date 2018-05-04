@@ -85,7 +85,7 @@ class ExtensionInstaller
 	}
 
 	private inline function markExtensionAsInstalled(extensionId: String): Void {
-		js.Browser.console.debug("Installing extension {0}", [extensionId]);
+        _logger.info("Installing extension {0}", [extensionId]);
 		_classes[extensionId] = true;
 	}
 

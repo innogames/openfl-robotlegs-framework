@@ -86,8 +86,7 @@ class CommandMapper implements ICommandMapper implements ICommandUnmapper implem
 	 */
 	public function withGuards(guards:Array<Dynamic>):ICommandConfigurator
 	{
-		Reflect.callMethod (null, _mapping.addGuards, guards);
-		//_mapping.addGuards.apply(null, guards);
+		_mapping.addGuards(guards);
 		return this;
 	}
 
@@ -96,8 +95,7 @@ class CommandMapper implements ICommandMapper implements ICommandUnmapper implem
 	 */
 	public function withHooks(hooks:Array<Dynamic>):ICommandConfigurator
 	{
-		Reflect.callMethod (null, _mapping.addHooks, hooks);
-		//_mapping.addHooks.apply(null, hooks);
+		_mapping.addHooks(hooks);
 		return this;
 	}
 

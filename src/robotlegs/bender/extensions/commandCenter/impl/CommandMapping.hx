@@ -113,8 +113,7 @@ class CommandMapping implements ICommandMapping
 	
 	public function addGuards(guards:Array<Dynamic>):ICommandMapping
 	{
-		//_guards = _guards.concat.apply(null, guards);
-		_guards = Reflect.callMethod(null, _guards.concat, guards);
+		_guards = _guards.concat(guards);
 		return this;
 	}
 
@@ -124,8 +123,7 @@ class CommandMapping implements ICommandMapping
 	
 	public function addHooks(hooks:Array<Dynamic>):ICommandMapping
 	{
-		//_hooks = _hooks.concat.apply(null, hooks);
-		_hooks = Reflect.callMethod(null, _hooks.concat, hooks);
+		_hooks = _hooks.concat(hooks);
 		return this;
 	}
 

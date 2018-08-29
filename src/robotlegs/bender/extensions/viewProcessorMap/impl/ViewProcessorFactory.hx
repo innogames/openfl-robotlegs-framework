@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.viewProcessorMap.impl;
 
+import haxe.ds.ObjectMap;
 import openfl.display.DisplayObject;
 import openfl.events.Event;
 import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
@@ -33,7 +34,7 @@ class ViewProcessorFactory implements IViewProcessorFactory
 
 	private var _injector:IInjector;
 
-	private var _listenersByView = new Map<String,Dynamic>();
+	private var _listenersByView: ObjectMap<Dynamic,Array<Dynamic>> = new ObjectMap<Dynamic,Array<Dynamic>>();
 
 	/*============================================================================*/
 	/* Constructor                                                                */
@@ -186,13 +187,13 @@ class ViewProcessorFactory implements IViewProcessorFactory
 
 	private function removeHandlerFromView(view:Dynamic, handler:Void->Void):Void
 	{
-		if (_listenersByView[UID.instanceID(view)] && (_listenersByView[UID.instanceID(view)].length > 0))
+		if (_listenersByView.exists(view) && (_listenersByView.get(view).length > 0))
 		{
-			var handlerIndex:UInt = _listenersByView[UID.instanceID(view)].indexOf(handler);
-			_listenersByView[UID.instanceID(view)].splice(handlerIndex, 1);
-			if (_listenersByView[UID.instanceID(view)].length == 0)
+			var handlerIndex:UInt = _listenersByView.get(view).indexOf(handler);
+			_listenersByView.get(view).splice(handlerIndex, 1);
+			if (_listenersByView.get(view).length == 0)
 			{
-				_listenersByView.remove(UID.instanceID(view));
+				_listenersByView.remove(view);
 			}
 		}
 	}
@@ -201,7 +202,7 @@ class ViewProcessorFactory implements IViewProcessorFactory
 @:keepSub
 class ViewProcessorFactoryCreateRemovedListener
 {
-	var _listenersByView:Map<String, Dynamic>;
+	var _listenersByView:ObjectMap<Dynamic,Array<Dynamic>>;
 	var view:Dynamic;
 	var type:Class<Dynamic>;
 	var processorMappings:Array<Dynamic>;
@@ -213,7 +214,7 @@ class ViewProcessorFactoryCreateRemovedListener
 		
 	}
 	
-	public function init(_listenersByView:Map<String,Dynamic>, runUnprocessors:Dynamic -> Class<Dynamic> -> Array<Dynamic> -> Void, removeHandlerFromView:Dynamic -> Dynamic -> Void, view:Dynamic, type:Class<Dynamic>, processorMappings:Array<Dynamic>) 
+	public function init(_listenersByView:ObjectMap<Dynamic,Array<Dynamic>>, runUnprocessors:Dynamic -> Class<Dynamic> -> Array<Dynamic> -> Void, removeHandlerFromView:Dynamic -> Dynamic -> Void, view:Dynamic, type:Class<Dynamic>, processorMappings:Array<Dynamic>)
 	{
 		this.removeHandlerFromView = removeHandlerFromView;
 		this.runUnprocessors = runUnprocessors;
@@ -225,10 +226,11 @@ class ViewProcessorFactoryCreateRemovedListener
 		if (Std.is(view, DisplayObject))
 		{
 			// CHECK
-			if (_listenersByView[UID.instanceID(view)] == null) _listenersByView[UID.instanceID(view)] = [];
-			//_listenersByView[view] ||= [];
-			
-			_listenersByView[UID.instanceID(view)].push(handler);
+			if (!_listenersByView.exists(view)) {
+                _listenersByView.set(view, []);
+            }
+
+			_listenersByView.get(view).push(handler);
 			cast(view, DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler, false, 0, true);
 		}
 	}

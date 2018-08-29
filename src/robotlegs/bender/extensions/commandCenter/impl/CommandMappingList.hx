@@ -8,6 +8,7 @@
 package robotlegs.bender.extensions.commandCenter.impl;
 
 
+import haxe.ds.ObjectMap;
 import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
@@ -26,7 +27,7 @@ class CommandMappingList implements ICommandMappingList
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _mappingsByCommand = new Map<String,Dynamic>();
+	private var _mappingsByCommand: ObjectMap<Dynamic,ICommandMapping> = new ObjectMap<Dynamic,ICommandMapping>();
 
 	private var _mappings = new Array<ICommandMapping>();
 
@@ -87,7 +88,7 @@ class CommandMappingList implements ICommandMappingList
 	{
 		_sorted = false;
 		applyProcessors(mapping);
-		var oldMapping:ICommandMapping = _mappingsByCommand[UID.instanceID(mapping.commandClass)];
+		var oldMapping:ICommandMapping = _mappingsByCommand.get(mapping.commandClass);
 		if (oldMapping != null)
 		{
 			overwriteMapping(oldMapping, mapping);
@@ -104,7 +105,7 @@ class CommandMappingList implements ICommandMappingList
 	 */
 	public function removeMapping(mapping:ICommandMapping):Void
 	{
-		if (_mappingsByCommand[UID.clearInstanceID(mapping.commandClass)])
+		if (_mappingsByCommand.exists(mapping.commandClass))
 		{
 			deleteMapping(mapping);
 			if (_mappings.length == 0) _trigger.deactivate();
@@ -116,7 +117,7 @@ class CommandMappingList implements ICommandMappingList
 	 */
 	public function removeMappingFor(commandClass:Class<Dynamic>):Void
 	{
-		var mapping:ICommandMapping = _mappingsByCommand[UID.instanceID(commandClass)];
+		var mapping:ICommandMapping = _mappingsByCommand.get(commandClass);
 		if (mapping != null) removeMapping(mapping);
 	}
 
@@ -143,14 +144,14 @@ class CommandMappingList implements ICommandMappingList
 
 	private function storeMapping(mapping:ICommandMapping):Void
 	{
-		_mappingsByCommand[UID.instanceID(mapping.commandClass)] = mapping;
+		_mappingsByCommand.set(mapping.commandClass, mapping);
 		_mappings.push(mapping);
 		if (_logger != null) _logger.debug('{0} mapped to {1}', [_trigger, mapping]);
 	}
 
 	private function deleteMapping(mapping:ICommandMapping):Void
 	{
-		_mappingsByCommand.remove(UID.clearInstanceID(mapping.commandClass));
+		_mappingsByCommand.remove(mapping.commandClass);
 		_mappings.splice(_mappings.indexOf(mapping), 1);
 		if (_logger != null) _logger.debug('{0} unmapped from {1}', [_trigger, mapping]);
 	}

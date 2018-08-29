@@ -7,6 +7,7 @@
 
 package robotlegs.bender.framework.impl;
 
+import haxe.ds.ObjectMap;
 import openfl.errors.Error;
 import org.swiftsuspenders.utils.CallProxy;
 import org.swiftsuspenders.utils.UID;
@@ -35,7 +36,7 @@ class ConfigManager
 
 	private var _objectProcessor:ObjectProcessor = new ObjectProcessor();
 
-	private var _configs = new Map<String,Bool>();
+	private var _configs: ObjectMap<Dynamic,Bool> = new ObjectMap<Dynamic,Bool>();
 
 	private var _queue:Array<Dynamic> = [];
 
@@ -79,10 +80,9 @@ class ConfigManager
 	 */
 	public function addConfig(config:Dynamic):Void
 	{
-		var id = UID.instanceID(config);
-		if (_configs[id] == null)
+		if (!_configs.exists(config))
 		{
-			_configs[id] = true;
+			_configs.set(config, true);
 			_objectProcessor.processObject(config);
 		}
 	}
@@ -105,9 +105,9 @@ class ConfigManager
 		_context.removeEventListener(LifecycleEvent.INITIALIZE, initialize);
 		_objectProcessor.removeAllHandlers();
 		_queue = [];
-		for (config in _configs)
+		for (config in _configs.keys())
 		{
-			_configs.remove(UID.clearInstanceID(config));
+			_configs.remove(config);
 		}
 	}
 

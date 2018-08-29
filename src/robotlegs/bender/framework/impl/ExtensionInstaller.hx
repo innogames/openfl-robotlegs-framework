@@ -8,9 +8,9 @@
 package robotlegs.bender.framework.impl;
 
 
+import haxe.ds.ObjectMap;
 import robotlegs.bender.framework.api.IExtension;
 import org.swiftsuspenders.InjectorMacro;
-import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.ILogger;
 
@@ -27,7 +27,7 @@ class ExtensionInstaller
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _classes = new Map<String,Bool>();
+	private var _classes: ObjectMap<Dynamic,Bool> = new ObjectMap<Dynamic,Bool>();
 
 	private var _context:IContext;
 
@@ -69,24 +69,23 @@ class ExtensionInstaller
 	}
 
 	private function instanllInstanceExtension(extension: IExtension): Void {
-		var extensionId: String = UID.instanceID(extension);
 
-		if (canInstall(extensionId)) {
-			markExtensionAsInstalled(extensionId);
+		if (canInstall(extension)) {
+			markExtensionAsInstalled(extension);
 			extension.extend(_context);
 		}
 	}
 
-	private inline function canInstall(extensionId: String): Bool {
-		var isInstalled: Bool = _classes[extensionId] == true;
-		if (isInstalled) _logger.warn("Attempt to install extension with id: " + extensionId + " twice!");
+	private inline function canInstall(extension: IExtension): Bool {
+		var isInstalled: Bool = _classes.exists(extension);
+		if (isInstalled) _logger.warn("Attempt to install extension with id: " + extension + " twice!");
 
 		return !isInstalled;
 	}
 
-	private inline function markExtensionAsInstalled(extensionId: String): Void {
-        _logger.info("Installing extension {0}", [extensionId]);
-		_classes[extensionId] = true;
+	private inline function markExtensionAsInstalled(extension: IExtension): Void {
+        _logger.info("Installing extension {0}", [extension]);
+		_classes.set(extension, true);
 	}
 
 	/**
@@ -94,8 +93,7 @@ class ExtensionInstaller
 	 */
 	public function destroy():Void
 	{
-		var fields = Reflect.fields (_classes);
-		for (propertyName in fields) {
+		for (propertyName in _classes.keys()) {
 			_classes.remove(propertyName);
 		}
 	}

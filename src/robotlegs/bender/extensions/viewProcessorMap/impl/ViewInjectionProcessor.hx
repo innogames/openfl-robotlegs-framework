@@ -8,7 +8,7 @@
 package robotlegs.bender.extensions.viewProcessorMap.impl;
 
 
-import org.swiftsuspenders.utils.UID;
+import haxe.ds.ObjectMap;
 import robotlegs.bender.framework.api.IInjector;
 
 /**
@@ -23,7 +23,7 @@ class ViewInjectionProcessor
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _injectedObjects = new Map<String,Dynamic>();
+	private var _injectedObjects: ObjectMap<Dynamic,Bool> = new ObjectMap<Dynamic,Bool>();
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
@@ -34,7 +34,9 @@ class ViewInjectionProcessor
 	 */
 	public function process(view:Dynamic, type:Class<Dynamic>, injector:IInjector):Void
 	{
-		if (!_injectedObjects[UID.instanceID(view)]) injectAndRemember(view, injector);
+		if (!_injectedObjects.exists(view)) {
+            injectAndRemember(view, injector);
+        }
 	}
 
 	/**
@@ -53,6 +55,6 @@ class ViewInjectionProcessor
 	private function injectAndRemember(view:Dynamic, injector:IInjector):Void
 	{
 		injector.injectInto(view);
-		_injectedObjects[UID.instanceID(view)] = view;
+		_injectedObjects.set(view, true);
 	}
 }

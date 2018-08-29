@@ -9,7 +9,6 @@ package robotlegs.bender.extensions.commandCenter.impl;
 
 
 import haxe.ds.ObjectMap;
-import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;

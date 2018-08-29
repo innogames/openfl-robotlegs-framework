@@ -10,7 +10,6 @@ package robotlegs.bender.framework.impl;
 import haxe.ds.ObjectMap;
 import openfl.errors.Error;
 import org.swiftsuspenders.utils.CallProxy;
-import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.framework.api.IConfig;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IInjector;

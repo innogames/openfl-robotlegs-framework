@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.mediatorMap.impl;
 
 
-import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.extensions.matching.ITypeFilter;
 import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 import robotlegs.bender.framework.api.IInjector;

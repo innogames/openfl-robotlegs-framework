@@ -8,8 +8,6 @@
 package robotlegs.bender.extensions.commandCenter.impl;
 
 
-import haxe.ds.ObjectMap;
-import org.swiftsuspenders.utils.UID;
 import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger;
 
@@ -61,8 +59,6 @@ class CommandTriggerMap
 			_triggers[key] = createTrigger(params);
 		}
 		return _triggers[key];
-
-		//return _triggers[UID.instanceID(key)] ||= createTrigger(params);
 	}
 
 	/**

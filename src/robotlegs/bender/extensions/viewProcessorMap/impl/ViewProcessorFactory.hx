@@ -11,7 +11,6 @@ import haxe.ds.ObjectMap;
 import openfl.display.DisplayObject;
 import openfl.events.Event;
 import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
-import org.swiftsuspenders.utils.UID;
 
 //import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 import robotlegs.bender.extensions.matching.ITypeFilter;

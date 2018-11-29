@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl;
@@ -19,9 +19,8 @@ import openfl.events.EventDispatcher;
 /**
  * @private
  */
-@:rtti
 @:keepSub
-class ContainerRegistry extends EventDispatcher
+class ContainerRegistry extends EventDispatcher implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/
@@ -43,7 +42,7 @@ class ContainerRegistry extends EventDispatcher
 	/**
 	 * @private
 	 */
-	
+
 	public function get_rootBindings():Array<ContainerBinding>
 	{
 		return this.rootBindings;
@@ -67,7 +66,7 @@ class ContainerRegistry extends EventDispatcher
 		if (!_bindingByContainer.exists(container)) {
 			_bindingByContainer.set(container, createBinding(container));
 		}
-		
+
 		return _bindingByContainer.get(container);
 	}
 
@@ -116,7 +115,7 @@ class ContainerRegistry extends EventDispatcher
 	private function createBinding(container:DisplayObjectContainer):ContainerBinding
 	{
 		var binding:ContainerBinding = new ContainerBinding(container);
-		
+
 		this.bindings.push(binding);
 
 		// Add a listener so that we can remove this binding when it has no handlers

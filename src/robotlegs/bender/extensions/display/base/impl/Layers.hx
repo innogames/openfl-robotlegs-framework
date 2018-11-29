@@ -9,30 +9,29 @@ import robotlegs.bender.extensions.display.base.api.IViewport;
  * ...
  * @author P.J.Shand
  */
-@:rtti
 @:keepSub
-class Layers implements ILayers
+class Layers implements ILayers implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	@inject public var viewport:IViewport;
-	
+
 	public var renderContext:IRenderContext;
 	public var layers = new Array<ILayer>();
-	
-	@:isVar 
+
+	@:isVar
 	public var addedLayers(get, null):Iterator<ILayer>;
 	public var numLayers(get, null):Int;
-	
-	public function new() 
+
+	public function new()
 	{
-		
+
 	}
-	
+
 	public function init():Void
 	{
 		viewport.onChange.add(OnViewportChange);
 	}
-	
-	function OnViewportChange() 
+
+	function OnViewportChange()
 	{
 		for (i in 0...layers.length)
 		{
@@ -41,13 +40,13 @@ class Layers implements ILayers
 			}
 		}
 	}
-	
+
 	public function removeLayerAt(index:Int):Void
 	{
 		if (index >= layers.length) return;
 		layers.splice(index, 1);
 	}
-	
+
 	public function addLayer(layer:ILayer):Void
 	{
 		layer.renderContext = renderContext;
@@ -55,7 +54,7 @@ class Layers implements ILayers
 		layers.push(layer);
 		renderContext.checkVisability();
 	}
-	
+
 	public function addLayerAt(layer:ILayer, index:Int):Void
 	{
 		layer.renderContext = renderContext;
@@ -64,10 +63,10 @@ class Layers implements ILayers
 			addLayer(layer);
 			return;
 		}
-		
+
 		var copyLayers = layers.copy();
 		layers = new Array<ILayer>();
-		for (i in 0...copyLayers.length) 
+		for (i in 0...copyLayers.length)
 		{
 			if (i == index) {
 				layers.push(layer);
@@ -76,11 +75,11 @@ class Layers implements ILayers
 		}
 		renderContext.checkVisability();
 	}
-	
+
 	public function removeLayer(layer:ILayer):Void
 	{
 		layer.renderContext = null;
-		for (i in 0...layers.length) 
+		for (i in 0...layers.length)
 		{
 			if (layers[i] == layer) {
 				layers.splice(i, 1);
@@ -88,10 +87,10 @@ class Layers implements ILayers
 		}
 		renderContext.checkVisability();
 	}
-	
+
 	public function getLayerIndex(layer:ILayer):Int
 	{
-		for (i in 0...layers.length) 
+		for (i in 0...layers.length)
 		{
 			if (layers[i] == layer) {
 				return i;
@@ -99,13 +98,13 @@ class Layers implements ILayers
 		}
 		return -1;
 	}
-	
-	public function get_numLayers():Int 
+
+	public function get_numLayers():Int
 	{
 		return layers.length;
 	}
-	
-	private function get_addedLayers():Iterator<ILayer> 
+
+	private function get_addedLayers():Iterator<ILayer>
 	{
 		return layers.iterator();
 	}

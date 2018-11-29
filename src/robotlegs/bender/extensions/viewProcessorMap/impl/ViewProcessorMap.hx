@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap.impl;
@@ -20,9 +20,8 @@ import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
  * View Processor Map implementation
  * @private
  */
-@:rtti
 @:keepSub
-class ViewProcessorMap implements IViewProcessorMap implements IViewHandler
+class ViewProcessorMap implements IViewProcessorMap implements IViewHandler implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/
@@ -60,7 +59,7 @@ class ViewProcessorMap implements IViewProcessorMap implements IViewHandler
 		// CHECK
 		if (_mappers[matcher.createTypeFilter().descriptor] == null) _mappers[matcher.createTypeFilter().descriptor] = createMapper(matcher);
 		return _mappers[matcher.createTypeFilter().descriptor];
-		
+
 		//return _mappers[matcher.createTypeFilter().descriptor] ||= createMapper(matcher);
 	}
 

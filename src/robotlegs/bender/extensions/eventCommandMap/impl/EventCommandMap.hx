@@ -21,8 +21,7 @@ import robotlegs.bender.framework.api.ILogger;
  */
 
 @:keepSub
-@:rtti
-class EventCommandMap implements IEventCommandMap
+class EventCommandMap implements IEventCommandMap implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/

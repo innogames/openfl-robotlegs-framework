@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //  Copyright (c) 2012 the original author or authors. All Rights Reserved.
-// 
+//
 
 
 //  NOTICE: You are permitted to use, modify, and distribute this file
@@ -27,9 +27,8 @@ import starling.events.Event;
  *
  * <p>It should be installed before context initialization.</p>
  */
-@:rtti
 @:keepSub
-class StarlingStageSyncExtension implements IExtension
+class StarlingStageSyncExtension implements IExtension implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/
@@ -56,9 +55,9 @@ class StarlingStageSyncExtension implements IExtension
 
 	/** Number of Starling instances which are not initialized. **/
 	private var _numStarlingsInQueue:Int = 0;
-	
+
 	public function new() { }
-	
+
 	/*============================================================================*/
 	/* Public Functions                                                           */
 	/*============================================================================*/
@@ -67,10 +66,10 @@ class StarlingStageSyncExtension implements IExtension
 	public function extend(context:IContext):Void
 	{
 		_uid = UID.create(StarlingStageSyncExtension);
-		
+
 		_context = context;
 		_logger = context.getLogger(this);
-		
+
 		_context.addConfigHandler(InstanceOfType.call(StarlingCollection), handleStarlingCollection);
 	}
 
@@ -103,7 +102,7 @@ class StarlingStageSyncExtension implements IExtension
 		}*/
 		_starlingCollection = collection;
 		_numStarlingsInQueue = collection.length;
-		
+
 		for (s in _starlingCollection.items)
 		{
 			var starling:Starling = s;

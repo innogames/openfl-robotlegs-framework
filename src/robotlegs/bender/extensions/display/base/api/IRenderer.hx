@@ -5,19 +5,18 @@ import openfl.display.BitmapData;
 /**
  * ...
  * @author P.J.Shand
- * 
+ *
  */
-@:rtti
 @:keepSub
-interface IRenderer
+interface IRenderer implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	var active(get, set):Bool;
 	var onActiveChange(get, null):Signal0;
-	
+
 	var frameRate:Null<Int>;
 	var prePresent:Signal0;
 	var postPresent:Signal0;
-	
+
 	function start():Void;
 	function stop():Void;
 	function render():Void;

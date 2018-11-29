@@ -1,4 +1,4 @@
-package robotlegs.bender.extensions.display.base.impl; 
+package robotlegs.bender.extensions.display.base.impl;
 
 import robotlegs.bender.extensions.contextView.ContextView;
 import robotlegs.bender.extensions.display.base.api.ILayers;
@@ -9,9 +9,8 @@ import robotlegs.bender.framework.api.IContext;
  * ...
  * @author P.J.Shand
  */
-@:rtti
 @:keepSub
-class BaseInitializer 
+class BaseInitializer implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	@inject public var renderer:IRenderer;
 	@inject public var renderContext:IRenderContext;
@@ -20,18 +19,18 @@ class BaseInitializer
 	@inject public var layers:ILayers;
 	private var _debug:Bool = false;
 	public var debug(get, set):Bool;
-	
-	public function BaseInitializer() 
+
+	public function BaseInitializer()
 	{
-		
+
 	}
-	
-	public function addLayer(ViewClass:Class<Dynamic>, index:Int, id:String):Void 
+
+	public function addLayer(ViewClass:Class<Dynamic>, index:Int, id:String):Void
 	{
-		
+
 	}
-	
-	private function autoID(ClassName:Class<Dynamic>):String 
+
+	private function autoID(ClassName:Class<Dynamic>):String
 	{
 		// FIX
 		/*var xml:XML = describeType(ClassName);
@@ -40,14 +39,14 @@ class BaseInitializer
 		else return className.split("::")[1];*/
 		return "" + (Math.random() * 1000);
 	}
-	
-	public function set_debug(value:Bool):Bool 
+
+	public function set_debug(value:Bool):Bool
 	{
 		_debug = value;
 		return value;
 	}
-	
-	public function get_debug():Bool 
+
+	public function get_debug():Bool
 	{
 		return _debug;
 	}

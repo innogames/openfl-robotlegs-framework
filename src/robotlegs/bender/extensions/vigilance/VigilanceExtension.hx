@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.vigilance;
@@ -25,7 +25,7 @@ class VigilanceExtension implements IExtension implements ILogTarget
 {
 	public function new()
 	{
-		
+
 	}
 	/*============================================================================*/
 	/* Private Properties                                                         */
@@ -69,16 +69,15 @@ class VigilanceExtension implements IExtension implements ILogTarget
 	}
 }
 
-@:rtti
 @:keep
-class MetadataChecker
+class MetadataChecker implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	@inject("optional=true") public var context:IContext;
 	//@inject("name=myNamedDependency","optional=true") public var context:IContext;
-	
+
 	//[Inject(name="myNamedDependency")]
 	//@inject public var context:IContext;
-	
+
 	public function check():Void
 	{
 		if (context == null)

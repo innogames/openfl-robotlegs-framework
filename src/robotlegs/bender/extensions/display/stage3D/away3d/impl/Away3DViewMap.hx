@@ -18,33 +18,32 @@ import robotlegs.bender.extensions.display.stage3D.away3d.api.IAway3DViewMap;
 import robotlegs.bender.extensions.display.base.api.IDisplayObject;
 
 /**
- * The <code>Away3DViewMap</code> class performs managing Away3D scene and 
+ * The <code>Away3DViewMap</code> class performs managing Away3D scene and
  * views automatic mediation. When view is added or removed from scene, it will
  * automatically create or destroy its mediator.
- */	
-@:rtti
+ */
 @:keepSub
-class Away3DViewMap implements IAway3DViewMap	
+class Away3DViewMap implements IAway3DViewMap implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	/*============================================================================*/
 	/* Public Properties                                                         */
 	/*============================================================================*/
-	
+
 	//@inject
 	/** Instance of View3D which contains scene receiving display objects. **/
 	//public var view3D:View3D;
-	
+
 	/** Collection of Starling views which will receive display objects. **/
 	@inject public var awayCollection:AwayCollection;
-	
+
 	/** Map for mediating views. **/
 	@inject public var mediatorMap:IMediatorMap;
-	
+
 	/*============================================================================*/
 	/* Constructor
 	/*============================================================================*/
 	public function Away3DViewMap() { }
-	
+
 	// FIX / CHECK
 	@postConstruct
 	//[PostConstruct]
@@ -53,7 +52,7 @@ class Away3DViewMap implements IAway3DViewMap
 	 */
 	public function init():Void
 	{
-		for (v in awayCollection.items) 
+		for (v in awayCollection.items)
 		{
 			// listen for ObjectContainer3D events
 			if (v == null) continue;
@@ -69,14 +68,14 @@ class Away3DViewMap implements IAway3DViewMap
 	/*============================================================================*/
 	/* Public Methods
 	/*============================================================================*/
-	
+
 	/** @inheritDoc **/
 	public function addAway3DView(view:Dynamic):Void
 	{
 		if( validateView(view))
 		{
 			if (Std.is(view, IDisplayObject)) {
-				
+
 				var displayObject:IDisplayObject = view;
 				displayObject.init();
 			}
@@ -99,17 +98,17 @@ class Away3DViewMap implements IAway3DViewMap
 	/*============================================================================*/
 	/* Private Methods
 	/*============================================================================*/
-	
+
 	/**
-	 * Validate if view added on scene is of type either <code>Scene3D</code> or 
-	 * <code>ObjectContainer3D</code>, and this is required since <code>Scene3D</code> 
+	 * Validate if view added on scene is of type either <code>Scene3D</code> or
+	 * <code>ObjectContainer3D</code>, and this is required since <code>Scene3D</code>
 	 * doesn't extend <code>ObjectContainer3D</code>.
-	 * 
+	 *
 	 * @param view View that needs to be validated.
-	 * 
+	 *
 	 * @return Returns <code>true</code> if view is of valid type, or <code>false</code>
 	 * otherwise.
-	 */		
+	 */
 	private function validateView(view:Dynamic):Bool
 	{
 		if(Std.is(view, Scene3D) || Std.is(view, ObjectContainer3D)){
@@ -117,22 +116,22 @@ class Away3DViewMap implements IAway3DViewMap
 		}else
 			return false;
 	}
-	
+
 	/**
 	 * Handle view added to scene.
-	 * 
+	 *
 	 * @param event View added to scene.
-	 */	
+	 */
 	private function onSceneAdded(event:Scene3DEvent):Void
 	{
 		addAway3DView(event.objectContainer3D);
 	}
-	
+
 	/**
 	 * Handle view removed from scene.
-	 * 
+	 *
 	 * @param event View removed from scene.
-	 */	
+	 */
 	private function onSceneRemoved(event:Scene3DEvent):Void
 	{
 		removeAway3DView(event.objectContainer3D);

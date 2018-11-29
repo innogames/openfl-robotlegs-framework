@@ -20,9 +20,8 @@ import robotlegs.bender.framework.api.ILogger;
 /**
  * @private
  */
-@:rtti
 @:keepSub
-class SignalCommandMap implements ISignalCommandMap
+class SignalCommandMap implements ISignalCommandMap implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/
@@ -49,7 +48,7 @@ class SignalCommandMap implements ISignalCommandMap
 		_injector = context.injector;
 		_logger = context.getLogger(this);
 		_triggerMap = new CommandTriggerMap(getKey, createTrigger);
-		
+
 		context.injector.map(AppSetupCompleteSignal).asSingleton();
 		var appSetupCompleteSignal:AppSetupCompleteSignal = context.injector.getInstance(AppSetupCompleteSignal);
 		appSetupCompleteSignal.dispatch();
@@ -95,7 +94,7 @@ class SignalCommandMap implements ISignalCommandMap
 	{
 		return "" + signalClass;
 	}
-	
+
 	private function createTrigger(signalClass:Class<Dynamic>):ICommandTrigger
 	{
 		return new SignalCommandTrigger(_injector, signalClass, _mappingProcessors);

@@ -7,9 +7,9 @@
 	"version": "0.4.5",
 	"releasenote": "add stage3D snapshot, only fire resize when values have changed and code cleanup",
 	"contributors": [ "p.j.shand" ],
-	"classPath": "src/",	
+	"classPath": "src/",
 	"dependencies": {
-		"swiftsuspenders": "0.2.2",
+		"swiftsuspenders": "",
 		"msignal": ""
 	}
 }

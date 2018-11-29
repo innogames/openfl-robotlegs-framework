@@ -6,13 +6,12 @@ import msignal.Signal.Signal0;
  * ...
  * @author P.J.Shand
  */
-@:rtti
 @:keepSub
-class AppSetupCompleteSignal extends Signal0 
+class AppSetupCompleteSignal extends Signal0 implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
-	
-	public function new() 
+
+	public function new()
 	{
 		super();
-	}	
+	}
 }

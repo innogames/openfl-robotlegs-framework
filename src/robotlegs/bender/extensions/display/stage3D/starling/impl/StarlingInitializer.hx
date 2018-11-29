@@ -12,46 +12,45 @@ import starling.events.Event;
  * ...
  * @author P.J.Shand
  */
-@:rtti
 @:keepSub
-class StarlingInitializer extends BaseInitializer
+class StarlingInitializer extends BaseInitializer implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 	//private static var starlingCollection:StarlingCollection;
 	public static var multitouchEnabled:Bool = true;
-	
-	public function new() 
+
+	public function new()
 	{
 		if (Starling.current == null){
 			Starling.multitouchEnabled = multitouchEnabled;
 		}
 	}
-	
-	override public function addLayer(ViewClass:Class<Dynamic>, index:Int, id:String):Void 
+
+	override public function addLayer(ViewClass:Class<Dynamic>, index:Int, id:String):Void
 	{
 		var stage3DRenderContext:Stage3DRenderContext = cast renderContext;
 		//var viewRectangle:Rectangle = new Rectangle(0,0, Viewport.width, Viewport.height);
 		var viewRectangle:Rectangle = new Rectangle(0,0, contextView.view.stage.stageWidth, contextView.view.stage.stageHeight);
 		if (id == "") id = autoID(ViewClass);
-		
+
 		if (Starling.current == null){
 			Starling.multitouchEnabled = multitouchEnabled;// true;// DeviceInfo.isMobile ? true:false; // for Multitouch Scene
 			//Starling.handleLostContext = true; // recommended everwhere when using AssetManager
 		}
-		
+
 		/*if (renderer.stage3D.context3D == null && renderer.context3D != null) {
 			renderer.stage3D.context3D = renderer.context3D;
 		}*/
-		
-		
-		
+
+
+
 		var starling:Starling = new Starling(cast ViewClass, contextView.view.stage, viewRectangle, stage3DRenderContext.stage3D, Context3DRenderMode.AUTO, stage3DRenderContext.profile);
 		starling.simulateMultitouch = true;
 		//starling.enableErrorChecking = Capabilities.isDebugger;
 		starling.shareContext = true;
 		starling.start();
-		
+
 		if (debug) starling.showStats = true;
-		
+
 		//if (starlingCollection == null) {
 			var starlingCollection:StarlingCollection = new StarlingCollection([starling, id]);
 			context.configure(starlingCollection);
@@ -59,13 +58,13 @@ class StarlingInitializer extends BaseInitializer
 		//else {
 		//	starlingCollection.addItem(starling, id);
 		//}
-		
+
 		var placeHolderLayer:PlaceHolderLayer = new PlaceHolderLayer();
 		if (index == -1) layers.addLayer(placeHolderLayer);
 		else layers.addLayerAt(placeHolderLayer, index);
 		var insertIndex:Int = layers.getLayerIndex(placeHolderLayer);
-		
-		var onStarlingReady = function(e:Event):Void 
+
+		var onStarlingReady = function(e:Event):Void
 		{
 			var starling:Starling = cast(e.target, Starling);
 			#if debug
@@ -76,7 +75,7 @@ class StarlingInitializer extends BaseInitializer
 			layers.removeLayer(placeHolderLayer);
 			layers.addLayerAt(layer, insertIndex);
 		}
-		
+
 		starling.addEventListener(Event.ROOT_CREATED, onStarlingReady);
 	}
 }

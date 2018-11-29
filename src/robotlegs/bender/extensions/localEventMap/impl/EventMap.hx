@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.localEventMap.impl;
@@ -16,8 +16,7 @@ import robotlegs.bender.extensions.localEventMap.api.IEventMap;
  */
 
 @:keepSub
-@:rtti
-class EventMap implements IEventMap
+class EventMap implements IEventMap implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/
@@ -193,6 +192,6 @@ class EventMap implements IEventMap
 	}
 
 	public function new() {
-		
+
     }
 }

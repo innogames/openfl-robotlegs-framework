@@ -19,8 +19,7 @@ import robotlegs.bender.framework.api.IInjector;
  */
 
 @:keepSub
-@:rtti
-class ModuleConnector implements IModuleConnector
+class ModuleConnector implements IModuleConnector implements org.swiftsuspenders.reflection.ITypeDescriptionAware
 {
 
 	/*============================================================================*/

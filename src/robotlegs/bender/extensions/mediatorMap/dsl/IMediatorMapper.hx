@@ -7,6 +7,8 @@
 
 package robotlegs.bender.extensions.mediatorMap.dsl;
 
+import robotlegs.bender.extensions.mediatorMap.api.IMediator;
+
 /**
  * Maps a matcher to a concrete Mediator class
  */
@@ -17,5 +19,5 @@ interface IMediatorMapper
 	 * @param mediatorClass The concrete mediator class
 	 * @return Mapping configurator
 	 */
-	function toMediator(mediatorClass:Class<Dynamic>):IMediatorConfigurator;
+	function toMediator(mediatorClass:Class<IMediator>):IMediatorConfigurator;
 }

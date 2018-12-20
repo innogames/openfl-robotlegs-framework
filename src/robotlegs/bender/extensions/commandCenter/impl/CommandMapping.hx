@@ -147,6 +147,6 @@ class CommandMapping implements ICommandMapping
 
 	public function toString():String
 	{
-		return 'Command ' + _commandClass;
+		return 'Command ' + Type.getClassName(_commandClass);
 	}
 }

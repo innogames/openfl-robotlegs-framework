@@ -7,6 +7,8 @@
 
 package robotlegs.bender.extensions.mediatorMap.dsl;
 
+import robotlegs.bender.extensions.mediatorMap.api.IMediator;
+
 /**
  * Configures a mediator mapping
  */

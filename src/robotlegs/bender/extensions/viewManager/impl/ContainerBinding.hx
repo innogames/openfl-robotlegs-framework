@@ -108,10 +108,8 @@ class ContainerBinding extends EventDispatcher
 	 */
 	public function handleView(view:DisplayObject, type:Class<Dynamic>):Void
 	{
-		var length:UInt = _handlers.length;
-		for (i in 0...length)
+		for (handler in _handlers)
 		{
-			var handler:IViewHandler = cast(_handlers[i], IViewHandler);
 			handler.handleView(view, type);
 		}
 	}

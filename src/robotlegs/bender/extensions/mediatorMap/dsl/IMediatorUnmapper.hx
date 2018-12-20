@@ -7,6 +7,8 @@
 
 package robotlegs.bender.extensions.mediatorMap.dsl;
 
+import robotlegs.bender.extensions.mediatorMap.api.IMediator;
+
 /**
  * Unmaps a Mediator
  */
@@ -16,7 +18,7 @@ interface IMediatorUnmapper
 	 * Unmaps a mediator from this matcher
 	 * @param mediatorClass Mediator to unmap
 	 */
-	function fromMediator(mediatorClass:Class<Dynamic>):Void;
+	function fromMediator(mediatorClass:Class<IMediator>):Void;
 
 	/**
 	 * Unmaps all mediator mappings for this matcher

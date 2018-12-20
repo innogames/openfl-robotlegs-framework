@@ -7,8 +7,11 @@
 
 package robotlegs.bender.framework.impl;
 
+import haxe.extern.EitherType;
+
 import openfl.events.EventDispatcher;
 import org.swiftsuspenders.utils.UID;
+import robotlegs.bender.framework.api.IConfig;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IInjector;
 import robotlegs.bender.framework.api.ILogTarget;
@@ -328,29 +331,10 @@ class Context extends EventDispatcher implements IContext
 	/**
 	 * @inheritDoc
 	 */
-	public function configure(configs:Dynamic):IContext
+	public function configure(config:EitherType<IConfig,Class<IConfig>>):IContext
 	{
-		if (Std.is(configs, Array)) {
-			var configsArray:Array<Dynamic> = cast(configs);
-			for (config in configsArray)
-			{
-				configureObject(config);
-			}
-		}
-		else {
-			configureObject(configs);
-		}
-		return this;
-	}
-	
-	private function configureObject(config:Dynamic):Void
-	{
-		#if (js)
-			if (!Std.is(config, Class)) {
-				Reflect.setProperty(config, "constructor", Type.getClass(config));
-			}
-		#end
 		_configManager.addConfig(config);
+		return this;
 	}
 
 	/**

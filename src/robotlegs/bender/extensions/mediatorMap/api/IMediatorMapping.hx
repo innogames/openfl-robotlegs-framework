@@ -22,7 +22,7 @@ interface IMediatorMapping
 	/**
 	 * The concrete mediator class
 	 */
-	public var mediatorClass(get, null):Class<Dynamic>;
+	public var mediatorClass(get, null):Class<IMediator>;
 	
 	/**
 	 * A list of guards to check before allowing mediator creation

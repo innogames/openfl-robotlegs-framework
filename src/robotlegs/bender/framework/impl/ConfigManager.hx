@@ -7,6 +7,7 @@
 
 package robotlegs.bender.framework.impl;
 
+import haxe.extern.EitherType;
 import haxe.ds.ObjectMap;
 import openfl.errors.Error;
 import org.swiftsuspenders.utils.CallProxy;
@@ -77,7 +78,7 @@ class ConfigManager
 	 * <p>If the manager is not initialized the configuration will be queued.</p>
 	 * @param config The configuration object or class
 	 */
-	public function addConfig(config:Dynamic):Void
+	public function addConfig(config:EitherType<IConfig,Class<IConfig>>):Void
 	{
 		if (!_configs.exists(config))
 		{
@@ -123,7 +124,7 @@ class ConfigManager
 		}
 	}
 
-	private function handleClass(type:Class<Dynamic>):Void
+	private function handleClass(type:Class<IConfig>):Void
 	{
 		if (_initialized)
 		{
@@ -137,7 +138,7 @@ class ConfigManager
 		}
 	}
 
-	private function handleObject(object:Dynamic):Void
+	private function handleObject(object:IConfig):Void
 	{
 		if (_initialized)
 		{
@@ -163,7 +164,7 @@ class ConfigManager
 					_logger.debug("Now initializing. Instantiating config class {0}", [config]);
 				#end
 				
-				processClass(cast(config, Class<Dynamic>));
+				processClass(config);
 			}
 			else
 			{
@@ -179,53 +180,27 @@ class ConfigManager
 		_queue = [];
 	}
 
-	private function processClass(type:Class<Dynamic>):Void
+	private function processClass(type:Class<IConfig>):Void
 	{
 		//var config = cast(_injector.getOrCreateNewInstance(type), IConfig);
 		// CHECK
 		//config && config.configure();
 		//if (config != null) config.configure();
 		
-		var object = _injector.getOrCreateNewInstance(type);
+		var object:IConfig = _injector.getOrCreateNewInstance(type);
 		
 		//catch (e:Error) {
 		//	throw new Error("Can't cast " + type + " to IConfig, check you are using the @:keepSub meta tag");
 		//}
 		
 		if (object != null) {
-			
-			
-			var className = Type.getClassName(type);
-			var hasFeild = CallProxy.hasField(object, "configure");
-			if (hasFeild) {
-				#if js
-					untyped __js__("object['configure']();");
-				#else 
-					var func = Reflect.getProperty(object, "configure");
-					if (func != null) func();
-				#end
-			}
+			object.configure();
 		}
 	}
 
-	private function processObject(object:Dynamic):Void
+	private function processObject(object:IConfig):Void
 	{
 		_injector.injectInto(object);
-		//var config = cast(object, IConfig);
-		
-		//config && config.configure();
-		//if (config != null) config.configure();
-		// CHECK
-		var hasFeild = CallProxy.hasField(object, "configure");
-		if (hasFeild) {
-			#if js
-				
-				untyped __js__("object['configure']();");
-			#else 
-				var func = Reflect.getProperty(object, "configure");
-				if (func != null) func();
-			#end
-		}
-		
+		object.configure();
 	}
 }

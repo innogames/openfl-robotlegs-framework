@@ -102,7 +102,7 @@ class ViewProcessorViewHandler implements IViewProcessorViewHandler
 	private function getInterestedMappingsFor(view:Dynamic, type:Class<Dynamic>):Array<IViewProcessorMapping>
 	{
 		var mapping:IViewProcessorMapping;
-		var id = UID.classID(type);
+		var id = Type.getClassName(type);
 
 		// we've seen this type before and nobody was interested
 		if (_interestedMappings[id] == false) {

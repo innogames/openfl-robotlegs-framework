@@ -12,6 +12,8 @@ package robotlegs.bender.extensions.mediatorMap.api;
  */
 interface IMediator
 {
+	var viewComponent(null, default):Dynamic;
+	
 	/**
 	 * Initializes the mediator. This is run automatically by the mediatorMap when a mediator is created.
 	 * Normally the initialize function is where you would add handlers using the eventMap.
@@ -23,4 +25,6 @@ interface IMediator
 	 * You should clean up any handlers that were added directly (eventMap handlers will be cleaned up automatically).
 	 */
 	function destroy():Void;
+
+	function postDestroy():Void;
 }

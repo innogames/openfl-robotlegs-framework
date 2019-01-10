@@ -87,7 +87,7 @@ class EventCommandTrigger implements ICommandTrigger
 
 	public function toString():String
 	{
-		return _eventClass + " with selector '" + _type + "'";
+		return (if (_eventClass == null) "null" else Type.getClassName(_eventClass)) + " with selector '" + _type + "'";
 	}
 
 	/*============================================================================*/

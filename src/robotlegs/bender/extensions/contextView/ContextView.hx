@@ -14,7 +14,9 @@ import openfl.display.DisplayObjectContainer;
  */
 
 @:keepSub
-class ContextView implements org.swiftsuspenders.reflection.ITypeDescriptionAware
+class ContextView
+	implements org.swiftsuspenders.reflection.ITypeDescriptionAware
+	implements robotlegs.bender.framework.api.IConfig
 {
 	public var view:DisplayObjectContainer;
 
@@ -26,4 +28,6 @@ class ContextView implements org.swiftsuspenders.reflection.ITypeDescriptionAwar
 	{
 		this.view = view;
 	}
+	
+	public function configure() {} // because we add this to ConfigManager for some reason /shrug
 }

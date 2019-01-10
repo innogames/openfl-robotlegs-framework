@@ -8,6 +8,7 @@
 package robotlegs.bender.extensions.mediatorMap.impl;
 
 import robotlegs.bender.extensions.matching.ITypeFilter;
+import robotlegs.bender.extensions.mediatorMap.api.IMediator;
 import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorConfigurator;
 
@@ -27,8 +28,8 @@ class MediatorMapping implements IMediatorMapping implements IMediatorConfigurat
 	   return matcher;
 	}
 	
-	public var mediatorClass(get, null):Class<Dynamic>;
-	function get_mediatorClass():Class<Dynamic>
+	public var mediatorClass(get, null):Class<IMediator>;
+	function get_mediatorClass():Class<IMediator>
 	{
 		return mediatorClass;
 	}
@@ -58,7 +59,7 @@ class MediatorMapping implements IMediatorMapping implements IMediatorConfigurat
 	/**
 	 * @private
 	 */
-	public function new(matcher:ITypeFilter, mediatorClass:Class<Dynamic>)
+	public function new(matcher:ITypeFilter, mediatorClass:Class<IMediator>)
 	{
 		this.matcher = matcher;
 		this.mediatorClass = mediatorClass;

@@ -7,6 +7,7 @@
 
 package robotlegs.bender.framework.api;
 
+import haxe.extern.EitherType;
 import openfl.events.IEventDispatcher;
 
 @:meta(Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent"))
@@ -88,7 +89,7 @@ interface IContext extends IEventDispatcher
 	 * @param configs Configuration objects or classes of any type
 	 * @return this
 	 */
-	function configure(configs:Dynamic):IContext;
+	function configure(config:EitherType<IConfig,Class<IConfig>>):IContext;
 
 	/**
 	 * Adds an uninitialized context as a child

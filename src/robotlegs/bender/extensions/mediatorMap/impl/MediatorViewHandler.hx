@@ -25,7 +25,7 @@ class MediatorViewHandler implements IViewHandler
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _mappings:Array<Dynamic> = [];
+	private var _mappings:Array<IMediatorMapping> = [];
 
 	private var _knownMappings = new Map<String,Array<IMediatorMapping>>();
 
@@ -76,7 +76,7 @@ class MediatorViewHandler implements IViewHandler
 	 */
 	public function handleView(view:DisplayObject, type:Class<Dynamic>):Void
 	{
-		var interestedMappings:Array<Dynamic> = getInterestedMappingsFor(view, type);
+		var interestedMappings = getInterestedMappingsFor(view, type);
 		if (interestedMappings != null)
 			_factory.createMediators(view, type, interestedMappings);
 	}
@@ -86,7 +86,7 @@ class MediatorViewHandler implements IViewHandler
 	 */
 	public function handleItem(item:Dynamic, type:Class<Dynamic>):Void
 	{
-		var interestedMappings:Array<Dynamic> = getInterestedMappingsFor(item, type);
+		var interestedMappings = getInterestedMappingsFor(item, type);
 		if (interestedMappings != null)
 			_factory.createMediators(item, type, interestedMappings);
 	}
@@ -102,31 +102,32 @@ class MediatorViewHandler implements IViewHandler
 
 	private function getInterestedMappingsFor(item:Dynamic, type:Class<Dynamic>):Array<IMediatorMapping>
 	{
-		var mapping:IMediatorMapping;
-		var typeID = UID.classID(type);
+		var typeID = Type.getClassName(type);
+		
+		var knownMappings = _knownMappings.get(typeID);
 		
 		// we've seen this type before and nobody was interested
-		if (_knownMappings.exists(typeID) && _knownMappings.get(typeID).length == 0)
+		if (knownMappings != null && knownMappings.length == 0)
 			return null;
 
 		// we haven't seen this type before
-		if (!_knownMappings.exists(typeID))
+		if (knownMappings == null)
 		{
-			_knownMappings.set(typeID, []);
-			for (i in 0..._mappings.length)
+			knownMappings = [];
+			_knownMappings.set(typeID, knownMappings);
+			for (mapping in _mappings)
 			{
-				mapping = _mappings[i];
 				if (mapping.matcher.matches(item))
 				{
-					_knownMappings.get(typeID).push(mapping);
+					knownMappings.push(mapping);
 				}
 			}
 			// nobody cares, let's get out of here
-			if (_knownMappings.get(typeID).length == 0)
+			if (knownMappings.length == 0)
 				return null;
 		}
 
 		// these mappings really do care
-		return _knownMappings.get(typeID);
+		return knownMappings;
 	}
 }

@@ -41,6 +41,8 @@ class Mediator implements IMediator implements org.swiftsuspenders.reflection.IT
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	public function new() {}
+
 	/**
 	 * @inheritDoc
 	 */

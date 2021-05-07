@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.commandCenter.impl;
 
+import robotlegs.bender.extensions.commandCenter.api.ICommand;
 import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 import robotlegs.bender.framework.api.IInjector;
@@ -30,8 +31,6 @@ class CommandExecutor implements ICommandExecutor
 
 	private var _removeMapping:ICommandMapping->Void;
 
-	private var _handleResult:Dynamic;
-
 	/*============================================================================*/
 	/* Constructor                                                                */
 	/*============================================================================*/
@@ -42,11 +41,10 @@ class CommandExecutor implements ICommandExecutor
 	 * @param removeMapping Remove mapping handler (optional)
 	 * @param handleResult Result handler (optional)
 	 */
-	public function new(injector:IInjector, removeMapping:ICommandMapping->Void = null, handleResult:Dynamic = null)
+	public function new(injector:IInjector, removeMapping:ICommandMapping->Void = null)
 	{
 		_injector = injector.createChild();
 		_removeMapping = removeMapping;
-		_handleResult = handleResult;
 	}
 
 	/*============================================================================*/
@@ -70,11 +68,11 @@ class CommandExecutor implements ICommandExecutor
 	 */
 	public function executeCommand(mapping:ICommandMapping, payload:CommandPayload = null):Void
 	{
-		
+
 		var hasPayload:Bool = (payload != null) && payload.hasPayload();
 		
 		var injectionEnabled:Bool = hasPayload && mapping.payloadInjectionEnabled;
-		var command:Dynamic = null;
+		var command:ICommand = null;
 
 		if (injectionEnabled) mapPayload(payload);
 
@@ -95,20 +93,9 @@ class CommandExecutor implements ICommandExecutor
 
 		if (injectionEnabled) unmapPayload(payload);
 
-		if (command != null && mapping.executeMethod != null)
+		if (command != null)
 		{
-			var executeMethod:Dynamic = Reflect.getProperty(command, mapping.executeMethod);
-			var result:Dynamic;
-			if ((hasPayload && executeMethod.length > 0)) {
-				result = Reflect.callMethod(null, executeMethod, payload.values);
-				//result = executeMethod.apply(null, payload.values);
-			}
-			else {
-				result = Reflect.callMethod(command, executeMethod, []);
-				//result = executeMethod();
-			}
-			//var result:Dynamic = (hasPayload && executeMethod.length > 0) ? executeMethod.apply(null, payload.values) : executeMethod();
-			if (_handleResult != null) _handleResult(result, command, mapping);
+			command.execute();
 		}
 	}
 
@@ -116,7 +103,7 @@ class CommandExecutor implements ICommandExecutor
 	/* Private Functions                                                          */
 	/*============================================================================*/
 
-	private function mapPayload(payload:CommandPayload):Void
+	inline function mapPayload(payload:CommandPayload):Void
 	{
 		var i:UInt = payload.length;
 		while (i-- > 0)
@@ -125,7 +112,7 @@ class CommandExecutor implements ICommandExecutor
 		}
 	}
 
-	private function unmapPayload(payload:CommandPayload):Void
+	inline function unmapPayload(payload:CommandPayload):Void
 	{
 		var i:UInt = payload.length;
 		while (i-- > 0)

@@ -16,12 +16,7 @@ interface ICommandMapping
 	 * The concrete Command Class<Dynamic> for this mapping
 	 */
 	public var commandClass(get, null):Class<Dynamic>;
-	
-	/**
-	 * The "execute" method to invoke on the Command instance
-	 */
-	public var executeMethod(get, null):String;
-	
+
 	/**
 	 * A list of Guards to query before execution
 	 */
